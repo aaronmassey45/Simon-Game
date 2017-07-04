@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Play Simon!</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <audio id="redbuzz" src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"></audio>
+  <audio id="greenbuzz" src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"></audio>
+  <audio id="yellowbuzz" src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"></audio>
+  <audio id="bluebuzz" src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"></audio>
+  <audio id="wrong" src="http://free-sounds.net/sound-files/special-effects/SHATTERE.WAV"></audio>
+  <main>
+    <div class="container">
+      <!-- START OF GAME CONTROLLER -->
+      <div class="jumbotron row">
+        <div class="text-center title">Simon!</div>
+        <!-- START OF CONTROLLER LEFT SIDE -->
+        <div class="col-sm-6">
+          <!-- START OF COUNTER -->
+          <div class="row">
+            <div class="col-sm-12 scp" style="margin-left: 20%">Count</div>
+            <div id="count" class="col-sm-12 text-center">--</div>
+          </div>
+          <!-- END OF COUNTER -->
+          <br>
+          <div class="row">
+            <div class="col-sm-6">
+              <!-- START OF START BUTTON -->
+              <div class="col-sm-12 scp">Start</div>
+              <div id="startBtn" class="col-sm-12 moveLeft"></div>
+              <!-- END OF START BUTTON -->
+            </div>
+
+            <div class="col-sm-6">
+              <!-- START OF STRICT MODE -->
+              <div class="col-sm-12 scp">Strict</div>
+              <div id="strict" class="col-sm-12">
+                <div id="slider" class="text-center">OFF</div>
+              </div>
+              <!-- END OF STRICT MODE -->
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div id="dPad" class="col-sm-12 moveLeft"></div>
+          </div>
+        </div>
+        <!-- END OF CONTROLLER LEFT SIDE -->
+
+        <!-- START OF CONTROLLER RIGHT SIDE -->
+        <div id="colorButtons" class="col-sm-6">
+          <div id="row1" class="row">
+            <div id="red" class="col-sm-6"></div>
+            <div id="blue" class="col-sm-6"></div>
+          </div>
+          <div id="row2" class="row">
+            <div id="yellow" class="col-sm-6"></div>
+            <div id="green" class="col-sm-6"></div>
+          </div>
+        </div>
+        <!-- END OF CONTROLLER RIGHT SIDE -->
+      </div>
+      <!-- END OF GAME CONTROLLER -->
+    </div>
+  </main>
+</body>
+
+<footer class="container-fluid text-center">
+  <p><b>Coded by Swole Papi</b></p>
+  <p><b>Free Code Camp Advanced Front End Project</b></p>
+</footer>
+
+</html>
+
+<script>
+  $(document).ready(function() {
+    var count = 0; //Variable to keep track of rounds in game
+    var strict = false; //strict mode variable
+    var redbuzz = $("#redbuzz")[0]; // sound for red
+    var bluebuzz = $("#bluebuzz")[0]; // sound for blue
+    var yellowbuzz = $("#yellowbuzz")[0]; // sound for yellow
+    var greenbuzz = $("#greenbuzz")[0]; // sound for green
+    var wrong = $("#wrong")[0]; // sound for green
+    var computerTurn = []; //Array for the AI's sequence
+    var userArr = []; //Array to store user button presses
+    var clicks = 0; // variable to count button presses in a user turn
+    var time;
+    var isUserTurn = false; //stops redundancies of userTurn function
+
+    //Allows user to switch into and out of strict mode
+    $("#slider").click(function() {
+      if (strict === false) {
+        $(this).css("float", "right");
+        $(this).html("ON");
+        $(this).css("color", "lightgreen");
+        strict = true;
+      } else {
+        $(this).css("float", "left");
+        $(this).html("OFF");
+        $(this).css("color", "red");
+        strict = false;
+      }
+    });
+
+    $("#startBtn").click(function() {
+      count=1;
+      generate();
+      aiTurn(0);
+      if (isUserTurn === false) {
+        userTurn();
+      }
+    });
+
+
+    //FUNCTIONS THAT WILL BE CALLED
+
+    //adds 20 random numbers between 0-3 to computerTurn
+    function generate() {
+      for (var i = 0; i < 20; i++) {
+        computerTurn[i] = Math.floor(Math.random() * 4);
+      }
+    }
+
+    //FUNCTION FOR AI'S TURN
+    function aiTurn(i) {  
+      if (count > 0) {
+        $("#count").html(count);
+      }
+      if (count < 4) {
+        time = 1000;
+      }
+      else if (count < 8) {
+        time = 850;
+      }
+      else if (count < 12) {
+        time = 700;
+      }
+      else if (count < 16) {
+        time = 550;
+      }
+      setTimeout(function() {
+        if (computerTurn[i] === 0) {
+          $("#red").css("opacity", "1");
+          redbuzz.play();
+          setTimeout(function() {
+            $("#red").css("opacity", "0.6");
+          }, time);
+        } else if (computerTurn[i] === 1) {
+          $("#blue").css("opacity", "1");
+          bluebuzz.play();
+          setTimeout(function() {
+            $("#blue").css("opacity", "0.6");
+          }, time);
+        } else if (computerTurn[i] === 2) {
+          $("#yellow").css("opacity", "1");
+          yellowbuzz.play();
+          setTimeout(function() {
+            $("#yellow").css("opacity", "0.6");
+          }, time);
+        } else if (computerTurn[i] === 3) {
+          $("#green").css("opacity", "1");
+          greenbuzz.play();
+          setTimeout(function() {
+            $("#green").css("opacity", "0.6");
+          }, time);
+        }    
+        if (i < count - 1) {  
+          i++;        // If i < count-1, keep going 
+          aiTurn(i);       // Call the loop again, and pass it the current value of i 
+        }
+      }, time*1.5);
+    }
+
+    function userTurn() {
+      isUserTurn = true;
+
+      $("#red").mousedown(function() {
+        $(this).css("opacity", "1");
+        redbuzz.play();
+        userArr.push(0);
+        clicks++;
+        isCorrect();
+      });
+      $("#red").mouseup(function() {
+        $(this).css("opacity", "0.6");
+        redbuzz.pause();
+        redbuzz.currentTime = 0;
+      });
+
+      //BLUE BUTTON LIGHT AND BUZZ
+      $("#blue").mousedown(function() {
+        $(this).css("opacity", "1");
+        bluebuzz.play();
+        userArr.push(1);
+        clicks++;
+        isCorrect();
+      });
+      $("#blue").mouseup(function() {
+        $(this).css("opacity", "0.6");
+        bluebuzz.pause();
+        bluebuzz.currentTime = 0;
+      });
+
+      //YELLOW BUTTON LIGHT AND BUZZ
+      $("#yellow").mousedown(function() {
+        $(this).css("opacity", "1");
+        yellowbuzz.play();
+        userArr.push(2);
+        clicks++;
+        isCorrect();
+      });
+      $("#yellow").mouseup(function() {
+        $(this).css("opacity", "0.6");
+        yellowbuzz.pause();
+        yellowbuzz.currentTime = 0;
+      });
+
+      //GREEN BUTTON LIGHT AND BUZZ
+      $("#green").mousedown(function() {
+        $(this).css("opacity", "1");
+        greenbuzz.play();
+        userArr.push(3);
+        clicks++;
+        isCorrect();
+      });
+      $("#green").mouseup(function() {
+        $(this).css("opacity", "0.6");
+        greenbuzz.pause();
+        greenbuzz.currentTime = 0;
+      });
+    }
+
+    //FUNCTION TO CHECK IF USER PRESSED THE CORRECT BUTTON
+    function isCorrect() {
+      if (userArr[clicks-1] == computerTurn[clicks-1] && clicks === count) { //if user presses button and current sequence is over
+        if (count > 19) { // if user game is won, end and restart
+          alert("You win!");
+          generate();
+          clicks = 0;
+          count = 1;
+          userArr = [];
+          aiTurn(0);
+        } else { // if game is not won, repeat sequence with addition step
+          count++;
+          clicks = 0;
+          userArr = [];
+          aiTurn(0);
+        }
+      }
+      else if (userArr[clicks-1] !== computerTurn[clicks-1]) { //if user presses wrong buttton
+        wrong.play();
+        if (strict === true) { //if strict, restart whole game with new sequence
+          generate();
+          clicks = 0;
+          count = 1;
+          userArr = [];
+          aiTurn(0);
+        } else if (strict === false) {// replay sequence
+          clicks = 0;
+          userArr = [];
+          aiTurn(0);
+        }
+      }
+
+    }
+
+  });
+</script>

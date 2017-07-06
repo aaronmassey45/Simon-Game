@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico|Source+Code+Pro|VT323');
+html, body, main{
+  background-color: black;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body{
+  min-height: 90%;
+}
+main {
+  padding: 0 0 10%;
+  position: relative;
+  min-height: 90%;
+}
+
+.container {
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.title {
+  display: table;
+  margin: 0 auto;
+  font-family: 'Pacifico', cursive;
+  font-size: 3em;
+  color: white;
+}
+
+.scp {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 2em;
+  color: white;
+}
+
+#count {
+  margin: auto;
+  font-family: 'VT323', monospace;
+  color: #DC0D29;
+  padding: 0px;
+  font-size: 2em;
+  width: 70px;
+  background-color: #32050C;
+  border: 4px solid #222;
+  border-radius: 20px;
+}
+
+#startBtn {
+  margin: auto;
+  height: 40px;
+  min-width: 30%;
+  max-width: 100px;
+  border-radius: 30%;
+  background-color: #383f49;
+  border: 4px solid #424244;
+  -webkit-box-shadow: 15px 4px 47px -15px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 15px 4px 47px -15px rgba(0, 0, 0, 0.75);
+  box-shadow: 15px 4px 47px -15px rgba(0, 0, 0, 0.75);
+  transition: all 200ms ease;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+}
+
+#startBtn:active {
+  position: relative;
+  border: 2px solid #424242;
+  top: 4px;
+  left: 4px;
+  width: 94px;
+  height: 38px;
+  box-shadow: none;
+}
+
+#strict {
+  margin: auto;
+  min-width: 30%;
+  max-width: 100px;
+  height: 50px;
+  background-color: #383f49;
+  border-radius: 10px;
+  padding: 10px;
+  left: 6%;
+}
+
+#slider {
+  background-color: grey;
+  height: 30px;
+  width: 30px;
+  border-radius: 5px;
+  padding-top: 4%;
+  color: red;
+  font-size: 75%;
+}
+
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+
+.main {
+  width: 16%;
+  height: 0;
+  position: relative;
+  padding-bottom: 16%;
+  margin: auto;
+  margin-top: -3%;
+}
+
+.yada {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.blue {
+  background-color: transparent;
+  border: 8px solid blue;
+  -webkit-transform: translate(-75%, 100%);
+}
+
+.green {
+  background-color: transparent;
+  border: 8px solid green;
+  -webkit-transform: translate(0, 25%);
+  -webkit-transform: translate(0, 175%);
+}
+
+.red {
+  background-color: transparent;
+  border: 8px solid red;
+  -webkit-transform: translate(0, 25%);
+}
+
+.yellow {
+  background-color: transparent;
+  border: 8px solid #ffd54f;
+  -webkit-transform: translate(75%, 100%);
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 620px)  {
+  .main {
+    width: 40%;
+    padding-bottom: 40%;
+  }
+}
+
+@media only screen and (min-device-width: 750px) and (max-device-width: 1100px)  {
+  .main {
+    width: 35%;
+    padding-bottom: 35%;
+  }
+}
